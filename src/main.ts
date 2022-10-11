@@ -17,7 +17,7 @@ import "element-plus/dist/index.css";
 // element dark(内置暗黑模式)
 import "element-plus/theme-chalk/dark/css-vars.css";
 // custom element dark(自定义暗黑模式)
-import "@/styles/element-dark.scss";
+import "@/styles/theme/element-dark.scss";
 // custom element css
 import "@/styles/element.scss";
 // custom directives
@@ -28,6 +28,8 @@ import router from "@/routers/index";
 import I18n from "@/language/index";
 // pinia store
 import pinia from "@/store/index";
+// svg icons
+import "virtual:svg-icons-register";
 
 const app = createApp(App);
 

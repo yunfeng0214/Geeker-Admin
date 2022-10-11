@@ -32,6 +32,28 @@ const proTableRouter: Array<RouteRecordRaw> = [
 					title: "使用 Component",
 					key: "useComponent"
 				}
+			},
+			{
+				path: "/proTable/useTreeFilter",
+				name: "useTreeFilter",
+				component: () => import("@/views/proTable/useTreeFilter/index.vue"),
+				meta: {
+					keepAlive: true,
+					requiresAuth: true,
+					title: "使用 TreeFilter",
+					key: "useTreeFilter"
+				}
+			},
+			{
+				path: "/proTable/useSelectFilter",
+				name: "useSelectFilter",
+				component: () => import("@/views/proTable/useSelectFilter/index.vue"),
+				meta: {
+					keepAlive: true,
+					requiresAuth: true,
+					title: "使用 SelectFilter",
+					key: "useSelectFilter"
+				}
 			}
 		]
 	}

@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore, createPinia } from "pinia";
 import { GlobalState, ThemeConfigProp } from "./interface";
-import { createPinia } from "pinia";
+import { DEFAULT_PRIMARY } from "@/config/config";
 import piniaPersistConfig from "@/config/piniaPersist";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
@@ -20,14 +20,22 @@ export const GlobalStore = defineStore({
 		language: "",
 		// themeConfig
 		themeConfig: {
+			// 布局切换 ==>  纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns
+			layout: "vertical",
 			// 默认 primary 主题颜色
-			primary: "#409EFF",
+			primary: DEFAULT_PRIMARY,
 			// 深色模式
 			isDark: false,
 			// 灰色模式
 			isGrey: false,
 			// 色弱模式
-			isWeak: false
+			isWeak: false,
+			// 面包屑导航
+			breadcrumb: true,
+			// 标签页
+			tabs: true,
+			// 页脚
+			footer: true
 		}
 	}),
 	getters: {},

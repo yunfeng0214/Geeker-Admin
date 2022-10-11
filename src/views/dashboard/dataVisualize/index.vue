@@ -1,6 +1,6 @@
 <template>
 	<div class="dataVisualize-box">
-		<div class="top-box">
+		<div class="card top-box">
 			<div class="top-title">数据可视化</div>
 			<el-tabs v-model="data.activeName" class="demo-tabs" @tab-click="handleClick">
 				<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>
@@ -46,12 +46,12 @@
 				<div class="item-right">
 					<div class="echarts-title">Gitee / GitHub 访问量占比</div>
 					<div class="book-echarts">
-						<Pie ref="pie" />
+						<Pie ref="pieRef" />
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="bottom-box">
+		<div class="card bottom-box">
 			<div class="bottom-title">数据来源</div>
 			<div class="bottom-tabs">
 				<el-tabs v-model="data.activeName" class="demo-tabs" @tab-click="handleClick">
@@ -59,7 +59,7 @@
 				</el-tabs>
 			</div>
 			<div class="curve-echarts">
-				<Curve ref="curve" />
+				<Curve ref="curveRef" />
 			</div>
 		</div>
 	</div>
@@ -67,9 +67,10 @@
 
 <script setup lang="ts" name="dataVisualize">
 import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
+import { ECharts } from "echarts";
 import Pie from "./components/pie.vue";
 import Curve from "./components/curve.vue";
-import { ECharts } from "echarts";
+
 /* 声明echarts实例 */
 interface ChartProps {
 	[key: string]: ECharts | null;
@@ -78,16 +79,16 @@ interface ChartProps {
 interface ChartExpose {
 	initChart: (params: any) => ECharts;
 }
-const pie = ref<ChartExpose>();
-const curve = ref<ChartExpose>();
+const pieRef = ref<ChartExpose>();
+const curveRef = ref<ChartExpose>();
 const data = reactive({
 	activeName: 1,
 	bookSum: "848.132w"
 });
-const dataScreen: ChartProps = reactive({
+const dataScreen: ChartProps = {
 	chart1: null,
 	chart2: null
-});
+};
 const handleClick = (): void => {};
 let tab = [
 	{ label: "未来7日", name: 1 },
@@ -116,20 +117,19 @@ let curveData = [
 
 /* 初始化 echarts */
 const initCharts = (): void => {
-	dataScreen.chart1 = pie.value?.initChart(pieData) as ECharts;
-	dataScreen.chart2 = curve.value?.initChart(curveData) as ECharts;
+	dataScreen.chart1 = pieRef.value?.initChart(pieData) as ECharts;
+	dataScreen.chart2 = curveRef.value?.initChart(curveData) as ECharts;
 };
 
 onMounted(() => {
 	/* 初始化echarts */
 	initCharts();
 	// 为浏览器绑定事件
-	window.addEventListener("resize", resize);
+	window.addEventListener("resize", resize, false);
 });
 
 /* 浏览器监听 resize 事件 */
 const resize = () => {
-	// 使用了 scale 的echarts其实不需要需要重新计算缩放比例
 	Object.values(dataScreen).forEach(chart => {
 		chart && chart.resize();
 	});
@@ -138,6 +138,7 @@ const resize = () => {
 /* 销毁时触发 */
 onBeforeUnmount(() => {
 	window.removeEventListener("resize", resize);
+	Object.values(dataScreen).forEach(val => val?.dispose());
 });
 </script>
 

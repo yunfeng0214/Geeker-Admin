@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { TabPaneProps } from "element-plus";
 import { TabsState } from "../interface";
-import { HOME_URL, TABS_BLACK_LIST } from "@/config/config";
+import { HOME_URL, TABS_WHITE_LIST } from "@/config/config";
 import piniaPersistConfig from "@/config/piniaPersist";
 import router from "@/routers/index";
 
@@ -9,16 +9,16 @@ import router from "@/routers/index";
 export const TabsStore = defineStore({
 	id: "TabsState",
 	state: (): TabsState => ({
-		tabsMenuValue: HOME_URL,
+		tabsMenuValue: HOME_URL, // 可以直接使用 route.path
 		tabsMenuList: [{ title: "首页", path: HOME_URL, icon: "home-filled", close: false }]
 	}),
 	getters: {},
 	actions: {
 		// Add Tabs
-		async addTabs(tabItem: Menu.MenuOptions) {
-			// not add tabs black list
-			if (TABS_BLACK_LIST.includes(tabItem.path)) return;
-			const tabInfo: Menu.MenuOptions = {
+		async addTabs(tabItem: TabsOptions) {
+			// not add tabs white list
+			if (TABS_WHITE_LIST.includes(tabItem.path)) return;
+			const tabInfo: TabsOptions = {
 				title: tabItem.title,
 				path: tabItem.path,
 				close: tabItem.close
@@ -27,7 +27,6 @@ export const TabsStore = defineStore({
 				this.tabsMenuList.push(tabInfo);
 			}
 			this.setTabsMenuValue(tabItem.path);
-			router.push(tabItem.path);
 		},
 		// Remove Tabs
 		async removeTabs(tabPath: string) {
@@ -56,7 +55,7 @@ export const TabsStore = defineStore({
 			this.tabsMenuValue = tabsMenuValue;
 		},
 		// Set TabsMenuList
-		async setTabsMenuList(tabsMenuList: Menu.MenuOptions[]) {
+		async setTabsMenuList(tabsMenuList: TabsOptions[]) {
 			this.tabsMenuList = tabsMenuList;
 		},
 		// Close MultipleTab

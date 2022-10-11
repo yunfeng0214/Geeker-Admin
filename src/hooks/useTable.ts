@@ -4,15 +4,19 @@ import { reactive, computed, onMounted, toRefs } from "vue";
 /**
  * @description table 页面操作方法封装
  * @param {Function} api 获取表格数据 api 方法(必传)
- * @param {Object} initParam 获取数据初始化参数(不必传，默认为{})
- * @param {Boolean} isPageable 是否有分页(不必传，默认为true)
+ * @param {Object} initParam 获取数据初始化参数(非必传，默认为{})
+ * @param {Boolean} isPageable 是否有分页(非必传，默认为true)
+ * @param {Function} dataCallBack 对后台返回的数据进行处理的方法(非必传)
  * */
-export const useTable = (api: (params: any) => Promise<any>, initParam: object = {}, isPageable: boolean = true) => {
+export const useTable = (
+	api: (params: any) => Promise<any>,
+	initParam: object = {},
+	isPageable: boolean = true,
+	dataCallBack?: (data: any) => any
+) => {
 	const state = reactive<Table.TableStateProps>({
 		// 表格数据
 		tableData: [],
-		// 是否展开更多搜索框
-		searchShow: false,
 		// 分页数据
 		pageable: {
 			// 当前页数
@@ -25,7 +29,7 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 		// 查询参数(只包括查询)
 		searchParam: {},
 		// 初始化默认的查询参数
-		initSearchParam: {},
+		searchInitParam: {},
 		// 总参数(包含分页和查询参数)
 		totalParam: {}
 	});
@@ -56,12 +60,12 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 	 * */
 	const getTableList = async () => {
 		try {
-			// 先更新查询参数
-			updatedTotalParam();
-			Object.assign(state.totalParam, initParam);
-			const { data } = await api(state.totalParam);
+			// 先把初始化参数和分页参数放到总参数里面
+			Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
+			let { data } = await api(state.totalParam);
+			dataCallBack && (data = dataCallBack(data));
 			state.tableData = isPageable ? data.datalist : data;
-			// 解构后台返回的分页数据(如果有分页更新分页信息)
+			// 解构后台返回的分页数据 (如果有分页更新分页信息)
 			const { pageNum, pageSize, total } = data;
 			isPageable && updatePageable({ pageNum, pageSize, total });
 		} catch (error) {
@@ -76,8 +80,8 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 	const updatedTotalParam = () => {
 		state.totalParam = {};
 		// 处理查询参数，可以给查询参数加自定义前缀操作
-		let nowSearchParam: { [propName: string]: any } = {};
-		// 防止手动清空输入框携带参数（可以自定义查询参数前缀）
+		let nowSearchParam: { [key: string]: any } = {};
+		// 防止手动清空输入框携带参数（这里可以自定义查询参数前缀）
 		for (let key in state.searchParam) {
 			// * 某些情况下参数为 false/0 也应该携带参数
 			if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0) {
@@ -102,6 +106,7 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 	 * */
 	const search = () => {
 		state.pageable.pageNum = 1;
+		updatedTotalParam();
 		getTableList();
 	};
 
@@ -113,9 +118,10 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 		state.pageable.pageNum = 1;
 		state.searchParam = {};
 		// 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
-		Object.keys(state.initSearchParam).forEach(key => {
-			state.searchParam[key] = state.initSearchParam[key];
+		Object.keys(state.searchInitParam).forEach(key => {
+			state.searchParam[key] = state.searchInitParam[key];
 		});
+		updatedTotalParam();
 		getTableList();
 	};
 

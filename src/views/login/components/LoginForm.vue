@@ -24,17 +24,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Login } from "@/api/interface";
-import { InjectProps } from "../interface/index";
 import { CircleClose, UserFilled } from "@element-plus/icons-vue";
-import type { ElForm } from "element-plus";
-import { ElMessage } from "element-plus";
+import { ElNotification } from "element-plus";
 import { loginApi } from "@/api/modules/login";
 import { GlobalStore } from "@/store";
 import { MenuStore } from "@/store/modules/menu";
 import { TabsStore } from "@/store/modules/tabs";
+import { getTimeState } from "@/utils/util";
+import { HOME_URL } from "@/config/config";
+import type { ElForm } from "element-plus";
 import md5 from "js-md5";
 
 const globalStore = GlobalStore();
@@ -55,31 +56,30 @@ const loginForm = reactive<Login.ReqLoginForm>({
 	password: ""
 });
 
-const loading = ref<boolean>(false);
+const loading = ref(false);
 const router = useRouter();
 // login
 const login = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async valid => {
-		if (valid) {
-			loading.value = true;
-			try {
-				const requestLoginForm: Login.ReqLoginForm = {
-					username: loginForm.username,
-					password: md5(loginForm.password)
-				};
-				const res = await loginApi(requestLoginForm);
-				// * 存储 token
-				globalStore.setToken(res.data!.access_token);
-				// * 登录成功之后清除上个账号的 menulist 和 tabs 数据
-				menuStore.setMenuList([]);
-				tabStore.closeMultipleTab();
-
-				ElMessage.success("登录成功！");
-				router.push({ name: "home" });
-			} finally {
-				loading.value = false;
-			}
+		if (!valid) return;
+		loading.value = true;
+		try {
+			const res = await loginApi({ ...loginForm, password: md5(loginForm.password) });
+			// 存储 token
+			globalStore.setToken(res.data!.access_token);
+			// 登录成功之后清除上个账号的 menulist 和 tabs 数据
+			menuStore.setMenuList([]);
+			tabStore.closeMultipleTab();
+			router.push(HOME_URL);
+			ElNotification({
+				title: getTimeState(),
+				message: "欢迎登录 Geeker-Admin",
+				type: "success",
+				duration: 3000
+			});
+		} finally {
+			loading.value = false;
 		}
 	});
 };
@@ -94,59 +94,11 @@ onMounted(() => {
 	// 监听enter事件（调用登录）
 	document.onkeydown = (e: any) => {
 		e = window.event || e;
-		if (e.code === "Enter" || e.code === "enter") {
+		if (e.code === "Enter" || e.code === "enter" || e.code === "NumpadEnter") {
 			if (loading.value) return;
 			login(loginFormRef.value);
 		}
 	};
-});
-
-// * 以下数据都为自己测试使用，不参与任何功能开发（可直接删除）
-// inject
-const provideState = inject("provideState") as InjectProps;
-// console.log(provideState.age);
-provideState.changeName();
-
-// 接收父组件参数（采用ts专有声明，有默认值）
-interface ParentProps {
-	age?: string;
-	address?: string[];
-	obj?: {
-		username: string;
-		password: string;
-	};
-}
-withDefaults(defineProps<ParentProps>(), {
-	age: "18",
-	address: () => ["天府广场", "天府三街"],
-	obj: () => {
-		return {
-			username: "admin",
-			password: "123456"
-		};
-	}
-});
-
-// 接收父组件参数（采用ts专有声明，无默认值）
-// const props1 = defineProps<{ item: string }>();
-
-// 子组件向父组件传输数据（触发父组件的submitParent方法）
-// const emit = defineEmits<{
-// 	(e: "submitParent", LoginFrom: Login.ReqLoginForm): void;
-// }>();
-
-// const submitParent = () => {
-// 	emit("submitParent", loginForm);
-// };
-
-// 子组件数据暴露给父组件
-const count = ref<number>(1);
-const consoleNumber = (name: string): void => {
-	console.log("我是子组件打印的数据", name);
-};
-defineExpose({
-	count,
-	consoleNumber
 });
 </script>
 

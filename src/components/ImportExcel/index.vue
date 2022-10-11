@@ -27,7 +27,7 @@
 				</el-upload>
 			</el-form-item>
 			<el-form-item label="数据覆盖 :">
-				<el-switch v-model="isCover"> </el-switch>
+				<el-switch v-model="isCover" />
 			</el-form-item>
 		</el-form>
 	</el-dialog>
@@ -43,7 +43,7 @@ export interface ExcelParameterProps {
 	title: string; // 标题
 	tempApi: (params: any) => Promise<any>; // 下载模板的Api
 	importApi: (params: any) => Promise<any>; // 批量导入的Api
-	getTableList: () => Promise<any>; // 获取表格数据的Api
+	getTableList?: () => Promise<any>; // 获取表格数据的Api
 }
 
 // 是否覆盖数据
@@ -72,9 +72,7 @@ const uploadExcel = async (param: any) => {
 	let excelFormData = new FormData();
 	excelFormData.append("file", param.file);
 	excelFormData.append("isCover", isCover.value as unknown as Blob);
-	if (!parameter.value.importApi) return;
-	const res = await parameter.value.importApi(excelFormData);
-	if (res.code !== 200) return param.onError();
+	await parameter.value.importApi!(excelFormData);
 	parameter.value.getTableList && parameter.value.getTableList();
 	dialogVisible.value = false;
 };
@@ -86,20 +84,20 @@ const uploadExcel = async (param: any) => {
 const beforeExcelUpload = (file: any) => {
 	const isExcel =
 		file.type === "application/vnd.ms-excel" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	const isLt5M = file.size / 1024 / 1024 < 5;
+	const fileSize = file.size / 1024 / 1024 < 5;
 	if (!isExcel)
 		ElNotification({
 			title: "温馨提示",
 			message: "上传文件只能是 xls / xlsx 格式！",
 			type: "warning"
 		});
-	if (!isLt5M)
+	if (!fileSize)
 		ElNotification({
 			title: "温馨提示",
 			message: "上传文件大小不能超过 5MB！",
 			type: "warning"
 		});
-	return isExcel && isLt5M;
+	return isExcel && fileSize;
 };
 
 // 文件数超出提示
@@ -115,7 +113,7 @@ const handleExceed = (): void => {
 const excelUploadError = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: "导入数据失败，请您重新上传！",
+		message: `批量添加${parameter.value.title}失败，请您重新上传！`,
 		type: "error"
 	});
 };
@@ -124,7 +122,7 @@ const excelUploadError = (): void => {
 const excelUploadSuccess = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: "导入数据成功！",
+		message: `批量添加${parameter.value.title}成功！`,
 		type: "success"
 	});
 };

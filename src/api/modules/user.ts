@@ -1,5 +1,4 @@
 import { ResPage, User } from "@/api/interface/index";
-import { ContentTypeEnum } from "@/enums/httpEnum";
 import { PORT1 } from "@/api/config/servicePort";
 
 import http from "@/api";
@@ -18,9 +17,8 @@ export const addUser = (params: { id: string }) => {
 };
 
 // * 批量添加用户
-export const BatchAddUser = (params: any) => {
-	// 其实 headers 中的 Content-Type 可以不写，请求可以自动判断，这里为了演示，写了一下
-	return http.post(PORT1 + `/user/import`, params, { headers: { "Content-Type": ContentTypeEnum.FORM_DATA } });
+export const BatchAddUser = (params: FormData) => {
+	return http.post(PORT1 + `/user/import`, params);
 };
 
 // * 编辑用户
@@ -46,4 +44,19 @@ export const resetUserPassWord = (params: { id: string }) => {
 // * 导出用户数据
 export const exportUserInfo = (params: User.ReqGetUserParams) => {
 	return http.post<BlobPart>(PORT1 + `/user/export`, params, { responseType: "blob" });
+};
+
+// * 获取用户状态
+export const getUserStatus = () => {
+	return http.get<User.ResStatus>(PORT1 + `/user/status`);
+};
+
+// * 获取用户性别字典
+export const getUserGender = () => {
+	return http.get<User.ResGender>(PORT1 + `/user/gender`);
+};
+
+// * 获取用户部门列表
+export const getUserDepartment = () => {
+	return http.get<User.ResDepartment>(PORT1 + `/user/department`);
 };

@@ -1,14 +1,14 @@
-# Vue 3.2 + TypeScript + Pinia + Vite2 + Element-Plus 管理系统（开源啦 🎉🎉）
+# Vue 3.2 + TypeScript + Pinia + Vite3 + Element-Plus 管理系统（开源啦 🎉🎉）
 
 ![banner](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/banner.png)
 
 ### 前言 📖
 
-Geeker Admin，基于 Vue3.2、TypeScript、Vite2、Pinia、Element-Plus 开源的一套后台管理模板，目前利用空余时间开发 🕒🕒。项目中很多功能、样式都是借鉴其它的管理系统，但代码是完全自己编写的，整个项目还有很多地方不完善，后期会持续更新（项目文档），希望大家能多提意见。
+Geeker Admin，基于 Vue3.2、TypeScript、Vite3、Pinia、Element-Plus 开源的一套后台管理模板，目前利用空余时间开发 🕒🕒。项目中很多样式都是借鉴其它的管理系统，但代码是完全自己编写的，整个项目还有很多地方不完善，后期会持续更新（项目文档），希望大家能多提意见。
 
 ### ？为什么开发这个管理系统 🤷‍♂️
 
-- 主要是学习下 Vue3 + TypeScript
+- 主要是学习下 Vue3.2 + TypeScript
 - 目前看了很多 Vue3 的开源后台管理系统，感觉都非常庞大，很多功能基本上也用不到，所以自己就尝试写了一下这个管理系统（适合自己的才是最好的 🤣）
 
 ### 项目相关文档 📚
@@ -19,14 +19,14 @@ Geeker Admin，基于 Vue3.2、TypeScript、Vite2、Pinia、Element-Plus 开源�
 
 ### 一、在线预览 👀
 
-- Link：http://admin.spicyboy.cn
+- Link：https://admin.spicyboy.cn
 
 ### 二、Git 仓库地址 (欢迎 Star⭐)
 
 - Gitee：https://gitee.com/laramie/Geeker-Admin
 - GitHub：https://github.com/HalseySpicy/Geeker-Admin
 
-### 三、🔥🔥🔥 React 最新版本已完成。欢迎 Star
+### 三、🔥🔥🔥 React18 最新版本已完成 🎉 欢迎 Star
 
 - Gitee：https://gitee.com/laramie/Hooks-Admin
 - GitHub：https://github.com/HalseySpicy/Hooks-Admin
@@ -34,7 +34,7 @@ Geeker Admin，基于 Vue3.2、TypeScript、Vite2、Pinia、Element-Plus 开源�
 ### 四、🔨🔨🔨 项目功能
 
 - 🚀 使用 Vue3.2 开发，单文件组件 `＜script setup＞`
-- 🚀 采用 Vite2 作为项目开发、打包工具（配置了 Gzip 打包、TSX 语法、跨域代理、打包预览工具……）
+- 🚀 采用 Vite3 作为项目开发、打包工具（配置了 Gzip 打包、TSX 语法、跨域代理、打包预览工具……）
 - 🚀 整个项目集成了 TypeScript （完全是为了想学习 🤣）
 - 🚀 使用 Pinia🍍 替代 Vuex，轻量、简单、易用（香啊~🤤 集成了持久化插件）
 - 🚀 使用 TypeScript 对 Axios 整个二次封装 （全局错误拦截、常用请求封装、全局请求 Loading、取消重复请求……）
@@ -68,7 +68,7 @@ cnpm install
 npm install --registry=https://registry.npm.taobao.org
 
 # 这里只是为了指定依赖包版本，防止没有版本锁 lock 而安装最新依赖包，导致的项目报错
-npm i @element-plus/icons-vue@1.1.4 @vueuse/core@8.0.1 axios@0.27.2 echarts@5.3.0 echarts-liquidfill@3.1.0 element-plus@2.2.6 js-md5@0.7.3 nprogress@0.2.0 pinia@2.0.12 pinia-plugin-persistedstate@1.6.1 qs@6.10.3 vue@3.2.25 vue-i18n@9.1.9 vue-router@4.0.12 vue3-seamless-scroll@1.2.0 --save
+npm i @element-plus/icons-vue@1.1.4 @vueuse/core@8.0.1 @wangeditor/editor@5.1.12 axios@0.27.2 echarts@5.3.0 echarts-liquidfill@3.1.0 element-plus@2.2.17 js-md5@0.7.3 mitt@3.0.0 nprogress@0.2.0 pinia@2.0.12 pinia-plugin-persistedstate@1.6.1 qs@6.11.0 vue@3.2.37 vue-i18n@9.1.9 vue-router@4.0.12 vue3-seamless-scroll@1.2.0 vuedraggable@4.1.0 --save
 ```
 
 - **Run：**
@@ -115,25 +115,25 @@ npm run commit
 
 #### 1、登录页：
 
-![login-light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/login-light.png)
+![login-light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224442.png)
 
-![login-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/login-dark.png)
+![login-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224447.png)
 
 #### 2、首页：
 
-![home_light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/home_light.png)
+![home_light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224501.png)
 
-![home-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220602145003.png)
+![home-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224505.png)
 
 #### 3、表格页：
 
-![table_light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/table_light.png)
+![table_light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224703.png)
 
-![table-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220602145016.png)
+![table-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224436.png)
 
 #### 4、数据大屏：
 
-![dataScreen02](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220602170253.png)
+![dataScreen02](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220909224444.png)
 
 ### 七、文件资源目录 📚
 
@@ -190,7 +190,7 @@ Geeker-Admin
 
 > 默认支持以下浏览器，vue3.2 不支持 IE 浏览器。更多浏览器可以查看 [Can I Use Es Module](https://caniuse.com/?search=ESModule)
 >
-> **💢 请不要使用 QQ 浏览器开发，QQ 浏览器 不识别 某些 ES6 以上语法**
+> **💢 请不要使用 QQ && 360 浏览器开发，不识别 某些 ES6 以上语法**
 
 | ![Edge](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/Edge.png) | ![Firefox](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/Firefox.png) | ![Chrome](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/Chrome.png) | ![Safari](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/md/Safari.png) |
 | :-----------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :---------------------------------------------------------------------------: | :---------------------------------------------------------------------------: |
@@ -205,11 +205,11 @@ Geeker-Admin
 
 ### 十、微信交流群
 
-> **😀 微信群超过 200 人了，请加我好友，我拉大家进群**
+> \*\*😀 微信群人已超过 500 人，请大家扫码加入二群。
 
-|                                                      微信二维码                                                       |
-| :-------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220610141657.png" alt="Wechat QRcode" width=170> |
+|                                            微信二维码                                             |
+| :-----------------------------------------------------------------------------------------------: |
+| <img src="https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20221008220726.png" width=170> |
 
 ### 十一、捐赠 🍵
 

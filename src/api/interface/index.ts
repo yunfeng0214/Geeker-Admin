@@ -23,7 +23,7 @@ export interface ReqPage {
 	pageSize: number;
 }
 
-// * 登录
+// * 登录模块
 export namespace Login {
 	export interface ReqLoginForm {
 		username: string;
@@ -33,11 +33,11 @@ export namespace Login {
 		access_token: string;
 	}
 	export interface ResAuthButtons {
-		[propName: string]: any;
+		[key: string]: any;
 	}
 }
 
-// * 用户管理
+// * 用户管理模块
 export namespace User {
 	export interface ReqGetUserParams extends ReqPage {
 		username: string;
@@ -60,5 +60,25 @@ export namespace User {
 		status: number;
 		avatar: string;
 		children?: ResUserList[];
+	}
+	export interface ResStatus {
+		userLabel: string;
+		userValue: number;
+	}
+	export interface ResGender {
+		genderLabel: string;
+		genderValue: number;
+	}
+	export interface ResDepartment {
+		id: string;
+		name: string;
+		children?: ResDepartment[];
+	}
+}
+
+// * 文件上传模块
+export namespace Upload {
+	export interface ResFileUrl {
+		fileUrl: string;
 	}
 }

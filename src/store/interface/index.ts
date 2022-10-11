@@ -1,9 +1,13 @@
 /* themeConfigProp */
 export interface ThemeConfigProp {
+	layout: string;
 	primary: string;
 	isDark: boolean;
 	isGrey: boolean;
 	isWeak: boolean;
+	breadcrumb: boolean;
+	tabs: boolean;
+	footer: boolean;
 }
 
 /* GlobalState */
@@ -24,13 +28,13 @@ export interface MenuState {
 /* TabsState */
 export interface TabsState {
 	tabsMenuValue: string;
-	tabsMenuList: Menu.MenuOptions[];
+	tabsMenuList: TabsOptions[];
 }
 
 /* AuthState */
 export interface AuthState {
 	authButtons: {
-		[propName: string]: any;
+		[key: string]: any;
 	};
 	authRouter: string[];
 }

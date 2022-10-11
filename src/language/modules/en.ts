@@ -4,15 +4,16 @@ export default {
 	},
 	tabs: {
 		more: "More",
+		refresh: "Refresh",
 		closeCurrent: "Close current",
 		closeOther: "Close other",
 		closeAll: "Close All"
 	},
 	header: {
-		componentSize: "Component Size",
+		componentSize: "Component size",
 		language: "Language",
 		theme: "theme",
-		themeSetting: "Theme setting",
+		layoutConfig: "Layout config",
 		primary: "primary",
 		darkMode: "Dark Mode",
 		greyMode: "Grey mode",
